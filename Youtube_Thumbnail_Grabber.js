@@ -2,74 +2,68 @@
 // @name        Thumbnail Grabber
 // @namespace   Violentmonkey Scripts
 // @match       https://www.youtube.com/*
-// @version     2.0
+// @version     2.5
 // @author      Kouta e D-zero
-// @description 17/10/2025 07:30:00
+// @description 09/03/2026 09:00:00
 // ==/UserScript==
 
 const textStyle = `
-.butaostyle {
+.dropdownContent {
+  position: relative;
+  display: none;
   font-style: oblique;
   font-weight: 600;
   background-color:rgb(70,70,70);
-  opacity:0.6;
-  border: none;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   color: white;
   padding: 8px;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 12px;
   margin: 4px 2px;
-  cursor: pointer;
   border-radius: 8px;
 }
-.butaostyle:hover {
+
+.dropdownContent:hover {
   background-color: grey;
 }
+
 .thumbbutao {
+  position: relative;
   font-style: oblique;
   font-weight: 600;
   background-color:rgb(70,70,70);
-  opacity:0.6;
   border: none;
   color: white;
-  padding: 4px;
+  padding: 10px;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 12px;
   margin: 2px 2px;
   cursor: pointer;
   border-radius: 2px;
 }
-.toggledButton {
-  font-style: oblique;
-  font-weight: 600;
-  background-color:rgb(0,200,200);
-  opacity:0.6;
-  border: none;
-  color: white;
-  padding: 8px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
+
+.thumbbutao:hover .dropdownContent{
+  display: block;
 }
-.toggledButton:hover {
-  background-color: rgb(0, 255, 255);
+
+.thumbbutao:hover {
+  top: 70px;
 }`;
 
-css();
+GM_addStyle(textStyle);
 
-function css() {
-    const style = document.createElement("style");
-    style.innerHTML = textStyle;
-    document.head.appendChild(style);
-}
+function GM_addStyle(aCss) {
+  'use strict';
+  let head = document.getElementsByTagName('head')[0];
+  if (head) {
+    let style = document.createElement('style');
+    style.setAttribute('type', 'text/css');
+    style.textContent = aCss;
+    head.appendChild(style);
+    return style;
+  }
+  return null;
+};
 
 function addButtonNewPage(){
   var element = document.getElementById("dropdownButton");
@@ -93,7 +87,7 @@ function addButtonNewPage(){
 
       options.forEach(optionText => {
         const option = document.createElement("div");
-        option.setAttribute("class", "butaostyle");
+        option.setAttribute("class", "dropdownContent");
         option.textContent = optionText;
         option.addEventListener("click", () => newTabUrl(optionText));
         defaultOption.appendChild(option);
